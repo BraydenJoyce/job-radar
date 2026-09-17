@@ -14,7 +14,7 @@ from typing import Sequence
 import httpx
 
 import config
-from models import ScoredPosting
+from models import ScoredPosting, is_staffing_agency
 
 log = logging.getLogger(__name__)
 
@@ -60,7 +60,8 @@ def format_digest(matches: Sequence[ScoredPosting]) -> str:
     for m in matches:
         tag = TIER_LABELS.get(m.match_type, m.match_type.title())
         salary = format_salary(m.salary_min, m.salary_max, m.salary_is_predicted)
-        meta = " · ".join(part for part in (m.location, salary) if part)
+        agency = "via staffing agency" if is_staffing_agency(m.company) else ""
+        meta = " · ".join(part for part in (m.location, salary, agency) if part)
         meta = f" · {meta}" if meta else ""
         lines.append(
             f"[{m.fit_score}] *{tag}* — {m.title} at {m.company}{meta}\n"
@@ -72,7 +73,10 @@ def format_digest(matches: Sequence[ScoredPosting]) -> str:
 def _posting_block(m: ScoredPosting) -> dict:
     tag = TIER_LABELS.get(m.match_type, m.match_type.title())
     salary = format_salary(m.salary_min, m.salary_max, m.salary_is_predicted)
-    meta = " · ".join(part for part in (m.location, salary) if part)
+    # Say so when a posting sits lower than its score suggests, rather than
+    # leaving the ordering looking arbitrary.
+    agency = "via staffing agency" if is_staffing_agency(m.company) else ""
+    meta = " · ".join(part for part in (m.location, salary, agency) if part)
     meta = f"\n{meta}" if meta else ""
     return {
         "type": "section",

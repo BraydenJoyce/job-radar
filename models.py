@@ -17,6 +17,18 @@ import config
 MatchType = Literal["ideal", "strong", "bridge", "weak"]
 
 
+def is_staffing_agency(company: str) -> bool:
+    """Whether a company is a listed staffing agency or recruiting firm.
+
+    Matched on whole words so "Vaco" does not fire inside another name.
+    """
+    if not company:
+        return False
+    name = _PUNCTUATION.sub(" ", company.lower())
+    padded = f" {name} "
+    return any(f" {agency} " in padded for agency in config.STAFFING_AGENCIES)
+
+
 def classify(fit_score: int) -> MatchType:
     """Map a fit score onto its band.
 

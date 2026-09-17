@@ -132,6 +132,24 @@ Everything else worth tuning is in `config.py` too: `DIGEST_SIZE`,
 Strong / Bridge labels), `EXCLUDED_TITLE_TERMS`, `BLOCKED_TERMS`, and the cost
 guards.
 
+### Staffing agencies
+
+Agencies advertise a client's role rather than hiring directly, and several will
+list the same underlying job. Left alone they crowd a digest — one real run here
+returned eight "AI Engineer" postings from eight different agencies.
+
+Companies in `STAFFING_AGENCIES` lose `STAFFING_AGENCY_PENALTY` points **for
+ordering only**. The stored fit score is untouched, a strong agency posting can
+still beat a weak direct one, and the digest says "via staffing agency" so the
+ordering is not mysterious.
+
+It is a hand-kept list on purpose. Matching on name patterns like *Systems*,
+*Solutions* or *Technologies* flags BAE Systems, L3Harris, NTT DATA, PNC and
+PlayStation just as readily as the agencies, and hiding real employers is worse
+than showing a few recruiters. Add names as you notice the same job arriving
+from several at once. The scoring prompt also asks the model to mark down
+agency reposts it recognises, which covers firms not on the list.
+
 ## After changing a filter or a score band
 
 Filters run once, when a posting is first stored, and labels are derived from

@@ -12,7 +12,7 @@ import sys
 from typing import Sequence
 
 import config
-from models import ScoredPosting
+from models import ScoredPosting, is_staffing_agency
 
 # Colour is skipped when output is redirected, when NO_COLOR is set (the
 # informal cross-tool convention), or on a terminal that will not handle it.
@@ -72,7 +72,8 @@ def render(matches: Sequence[ScoredPosting]) -> str:
         lines.append(f"  {_c(str(m.fit_score).rjust(3), '1')}  {band}  {_c(m.title, '1')}")
         lines.append(f"       {m.company}")
 
-        meta = " · ".join(part for part in (m.location, _salary(m)) if part)
+        agency = "via staffing agency" if is_staffing_agency(m.company) else ""
+        meta = " · ".join(part for part in (m.location, _salary(m), agency) if part)
         if meta:
             lines.append(_c(f"       {meta}", "90"))
 

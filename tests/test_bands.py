@@ -243,3 +243,61 @@ def test_payload_keeps_a_text_fallback():
     matches = [make_sourced(80, "adzuna")]
 
     assert "Analyst 80" in slack.format_digest(matches)
+
+
+# --- staffing agencies -----------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "company,expected",
+    [
+        ("Collabera LLC", True),
+        ("Robert Half", True),
+        ("Motion Recruitment Partners, LLC", True),
+        ("APEX SYSTEMS", True),          # case insensitive
+        ("Unisys", False),
+        ("Vanguard", False),
+        ("Booz Allen Hamilton", False),
+        ("Vacation Rentals Inc", False),  # must not match "vaco" inside a word
+    ],
+)
+def test_staffing_agency_detection(company, expected):
+    from models import is_staffing_agency
+
+    assert is_staffing_agency(company) is expected
+
+
+def test_agency_postings_rank_below_equal_direct_ones():
+    agency = make_named(80, "AI Engineer", "Collabera LLC")
+    direct = make_named(72, "AI Engineer", "Vanguard")
+
+    selected = ranker.rank([agency, direct], size=2)
+
+    # 80 - 15 = 65, which is below the direct posting's 72.
+    assert [c.company for c in selected] == ["Vanguard", "Collabera LLC"]
+
+
+def test_a_strong_agency_posting_still_beats_a_weak_direct_one():
+    """Deprioritised, not excluded -- good jobs do come through recruiters."""
+    agency = make_named(90, "AI Engineer", "Collabera LLC")
+    direct = make_named(64, "AI Engineer", "Vanguard")
+
+    selected = ranker.rank([agency, direct], size=2)
+
+    assert [c.company for c in selected] == ["Collabera LLC", "Vanguard"]
+
+
+def test_the_penalty_does_not_change_the_stored_score():
+    agency = make_named(80, "AI Engineer", "Collabera LLC")
+
+    selected = ranker.rank([agency], size=1)
+
+    assert selected[0].fit_score == 80
+
+
+def test_digest_says_when_a_posting_is_via_an_agency():
+    agency = make_sourced(80, "adzuna")
+    agency.company = "Robert Half"
+
+    assert "via staffing agency" in slack.format_digest([agency])
+    assert "via staffing agency" in str(slack.build_blocks([agency]))

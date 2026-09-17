@@ -7,7 +7,7 @@ from typing import Sequence
 
 import config
 from db.repository import Repository
-from models import ScoredPosting, dedup_key
+from models import ScoredPosting, dedup_key, is_staffing_agency
 
 log = logging.getLogger(__name__)
 
@@ -31,9 +31,16 @@ def rank(
     # date sorts last rather than winning by accident.
     # Not tie-broken on match_type: it is derived from the score, so postings
     # that tie on score always share a label.
-    ordered = sorted(
-        qualified, key=lambda c: (c.fit_score, c.posted_at or ""), reverse=True
-    )
+    def sort_key(c: ScoredPosting) -> tuple[int, str]:
+        # Agencies advertise a client's role, and several will carry the same
+        # job. The penalty applies to ordering only -- the stored fit score is
+        # about fit, and stays honest.
+        effective = c.fit_score
+        if is_staffing_agency(c.company):
+            effective -= config.STAFFING_AGENCY_PENALTY
+        return (effective, c.posted_at or "")
+
+    ordered = sorted(qualified, key=sort_key, reverse=True)
 
     # Last line of defence against the same job filling several slots. The
     # fetch step already collapses syndicated listings, but rows stored before

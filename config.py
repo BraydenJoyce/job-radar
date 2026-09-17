@@ -215,6 +215,79 @@ EXCLUDED_TITLE_TERMS = (
     SENIORITY_EXCLUSIONS[CAREER_LEVEL] + ALWAYS_EXCLUDED_TITLE_TERMS
 )
 
+# --- Staffing agencies -----------------------------------------------------
+#
+# Agencies advertise a client's role rather than hiring directly, and several
+# will list the same underlying job. Left alone they crowd a digest: one run
+# here returned eight "AI Engineer" postings from eight different agencies.
+#
+# These are deprioritised, not dropped -- plenty of good jobs come through
+# recruiters. A listed company loses STAFFING_AGENCY_PENALTY points for
+# ordering only; the stored fit score is untouched, and the digest says why.
+#
+# Matched as whole words against the company name, so add or remove freely.
+# The scoring prompt also asks the model to mark down agency reposts it
+# recognises, which covers firms that are not listed here.
+STAFFING_AGENCIES = [
+    "robert half",
+    "kforce",
+    "randstad",
+    "insight global",
+    "apex systems",
+    "motion recruitment",
+    "collabera",
+    "compunnel",
+    "teksystems",
+    "aerotek",
+    "adecco",
+    "manpower",
+    "cybercoders",
+    "jobot",
+    "aston carter",
+    "beacon hill",
+    "experis",
+    "judge group",
+    "mindlance",
+    "artech",
+    "tekwissen",
+    "russell tobin",
+    "addison group",
+    "vaco",
+    "talentburst",
+    "us tech solutions",
+    "diversified services network",
+    "acquisition network",
+    "quantum technologies",
+    "statusneo",
+    "pragma edge",
+    "metarpo",
+    "stefanini",
+    "synapse business systems",
+    # Seen in real fetches. Keep adding as you notice the same job arriving
+    # from several of them at once -- that is the tell.
+    "sunrise systems",
+    "ait global",
+    "apn consulting",
+    "aditi consulting",
+    "innova solutions",
+    "inspyr solutions",
+    "pyramid consulting",
+    "ptr global",
+    "perfict global",
+    "nastech global",
+    "prudent technologies",
+    "javen technologies",
+    "agreeya",
+]
+
+# Deliberately NOT here, despite names that look the part: BAE Systems,
+# L3Harris Technologies, NTT DATA Services, PNC Financial Services Group,
+# PlayStation Global, PA Consulting, and every Naval ... Command. They hire
+# directly. A name-pattern heuristic flags all of them, which is why this is a
+# hand-kept list rather than a regex.
+
+STAFFING_AGENCY_PENALTY = 15
+
 MAX_POSTING_AGE_DAYS = 14
 
 

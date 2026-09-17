@@ -39,6 +39,8 @@ Score this posting's fit for the candidate from 0 to 100 using this scale:
 
 {career_guidance}
 
+If the posting is from a staffing agency, recruiting firm, or consultancy advertising a client's role rather than the employer hiring directly, score it below an equivalent direct posting.
+
 Be strict. A role that merely shares a job title with the candidate's target, without the substance behind it, belongs in the 60s.
 
 Give a precise score that uses the full range. Do not round to the nearest 5 or 10, and do not give the same score to two postings that differ in fit. Across a typical batch of 50 postings, expect roughly one at 85 or above, four from 75 to 84, twelve from 60 to 74, and the rest below 60.
