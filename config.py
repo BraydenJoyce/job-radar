@@ -37,8 +37,10 @@ SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
 
 # --- Sources ---------------------------------------------------------------
 
-# Which sources run. Phase 1 of the plan is Adzuna only; add "usajobs",
-# "greenhouse", and "lever" as you move into phase 2.
+# Which sources run. "adzuna" and "usajobs" are keyword driven and need only
+# their API keys. "greenhouse" and "lever" read one company's board at a time,
+# so they do nothing until you list company slugs in
+# sources/watched_companies.py.
 ENABLED_SOURCES = ["adzuna", "usajobs"]
 
 # What to search for on the keyword-driven sources (Adzuna, USAJobs).

@@ -5,7 +5,7 @@ python-dotenv>=1.0
 anthropic>=1.6
 
 # Optional: only needed if you run the pipeline from a long-lived Python
-# process instead of Windows Task Scheduler (see section 12 of the plan).
+# process instead of a system scheduler (Windows Task Scheduler, or cron).
 apscheduler>=3.10
 
 # Dev / tests

@@ -1,4 +1,4 @@
-"""Adzuna search API. Free key, broad US coverage -- the phase 1 source."""
+"""Adzuna search API. Free key required, broad coverage across industries."""
 
 from __future__ import annotations
 
