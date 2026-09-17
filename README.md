@@ -7,24 +7,13 @@ The point is to stop scanning job boards. You read eight postings a day that
 someone has already judged against your résumé, instead of three hundred that
 matched a keyword.
 
-```
-Job Radar: today's top matches
+![A Job Radar digest in Slack: eight job postings, each with a linked title, a
+fit score from 0 to 100, a match band, location and salary range, and a one
+sentence reason explaining the score. An Adzuna credit appears at the
+bottom.](assets/digest.png)
 
-Strategic Market Intelligence Analyst  at CACI
-82  Strong match
-Remote · $73k-$149k
-Directly matches the candidate's competitive intelligence pipeline work,
-though the security domain is new.
-
-Entry level Data Analyst  at Dhalite Inc.
-72  Bridge
-Chicago · $80k · Adzuna Jobsworth
-Straightforward SQL reporting the candidate could do today, but it does not
-advance the analytics engineering track.
-
-──────────────────────────────────────────
-[logo]  Jobs by Adzuna · salary estimates by Adzuna Jobsworth
-```
+A real digest, scored against the `profile.example.txt` that ships with this
+repo — so this is roughly what you get before tuning anything.
 
 Titles link to the posting. A salary marked *Adzuna Jobsworth* is Adzuna's own
 estimate rather than a figure the employer published — worth reading
