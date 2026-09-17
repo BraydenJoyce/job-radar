@@ -1,0 +1,56 @@
+#!/bin/sh
+#
+# Job Radar pre-commit hook: refuse to commit secrets or personal files.
+#
+# GitHub's secret scanning and push protection are free only on public repos,
+# so on a private repo this is the safety net. It also catches a secret before
+# it enters local history at all, which is where it is hardest to remove.
+#
+# Install:
+#   cp scripts/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# Bypass for one commit, if you are certain:
+#   git commit --no-verify
+
+fail=0
+
+note() {
+    echo "pre-commit: $1" >&2
+    fail=1
+}
+
+# --- files that must never be tracked -------------------------------------
+for path in .env profile.txt scripts/job_radar_task.xml; do
+    if git diff --cached --name-only --diff-filter=AM | grep -qx "$path"; then
+        note "'$path' is staged. It holds your own credentials or resume."
+    fi
+done
+
+if git diff --cached --name-only --diff-filter=AM | grep -qE '\.(db|sqlite3?)$'; then
+    note "a database file is staged. It contains scraped postings and scores."
+fi
+
+# --- secret patterns in staged content ------------------------------------
+# Scans the staged diff, so it catches a key pasted into any file, not just
+# the ones above.
+staged=$(git diff --cached --diff-filter=AM -U0)
+
+check_pattern() {
+    if printf '%s' "$staged" | grep -qE "$1"; then
+        note "$2"
+    fi
+}
+
+check_pattern 'sk-ant-[A-Za-z0-9_-]{16,}'          "an Anthropic API key appears in the staged changes."
+check_pattern 'hooks\.slack\.com/services/[A-Za-z0-9/+]{20,}' "a Slack webhook URL appears in the staged changes."
+check_pattern 'xox[baprs]-[A-Za-z0-9-]{10,}'       "a Slack token appears in the staged changes."
+check_pattern 'gh[pousr]_[A-Za-z0-9]{20,}'         "a GitHub token appears in the staged changes."
+check_pattern 'AKIA[0-9A-Z]{16}'                   "an AWS access key id appears in the staged changes."
+
+if [ "$fail" -ne 0 ]; then
+    echo "pre-commit: commit blocked. Fix the above, or use --no-verify if you are sure." >&2
+    exit 1
+fi
+
+exit 0
