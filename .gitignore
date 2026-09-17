@@ -1,0 +1,36 @@
+# Secrets -- never commit
+.env
+.env.*
+!.env.example
+
+# Your own profile. profile.example.txt is the template that ships; the real
+# one is your resume in plain text and stays local.
+profile.txt
+
+# Local data
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+logs/
+*.log
+
+# The generated Task Scheduler definition contains your Windows username and
+# absolute paths. scripts/install_task.ps1 regenerates it.
+scripts/job_radar_task.xml
+
+# Python
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

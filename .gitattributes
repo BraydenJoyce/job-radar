@@ -1,0 +1,10 @@
+# Normalize line endings so a clone behaves the same on every platform.
+* text=auto eol=lf
+
+# These must keep CRLF or Windows will not run them correctly.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Never touched.
+*.db binary

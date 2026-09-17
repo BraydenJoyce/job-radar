@@ -1,0 +1,12 @@
+# Job Radar runtime dependencies
+httpx>=0.27
+pydantic>=2.7
+python-dotenv>=1.0
+anthropic>=1.6
+
+# Optional: only needed if you run the pipeline from a long-lived Python
+# process instead of Windows Task Scheduler (see section 12 of the plan).
+apscheduler>=3.10
+
+# Dev / tests
+pytest>=8.0

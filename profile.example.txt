@@ -1,0 +1,14 @@
+Jordan Rivera. B.S. Information Systems, State University, 2025.
+
+Target roles: data analyst, business intelligence analyst, analytics engineer. Interested in roles where reporting work sits close to the decisions it informs.
+
+Experience:
+- Data Analytics Intern at Northgate Logistics: built a Python pipeline that consolidated carrier invoices from four systems into a single reconciliation report, cutting a two day manual process to under an hour. Presented monthly cost variance findings to operations leads.
+- Student Analyst at the university's institutional research office: maintained enrollment dashboards in Tableau, wrote SQL extracts against the student records database.
+- Barista at a regional coffee chain through school.
+
+Technical skills: SQL (PostgreSQL, SQL Server), Python for data work (pandas, requests, openpyxl), Tableau, Excel including Power Query, basic dbt, git. Comfortable reading an API doc and writing the client.
+
+Personal projects: a scraper and dashboard tracking regional rental prices, built with Python and Streamlit; a small ETL project loading public transit data into DuckDB for schedule reliability analysis.
+
+Open to bridge roles that provide near term income while continuing to target analytics work with more ownership.
