@@ -91,6 +91,7 @@ class ScoredPosting(BaseModel):
     """A posting joined to its score, ready for ranking and the digest."""
 
     posting_id: str
+    source: str = ""
     title: str
     company: str
     location: Optional[str] = None

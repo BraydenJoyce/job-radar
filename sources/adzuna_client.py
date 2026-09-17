@@ -13,7 +13,7 @@ from sources.base import clean_text, to_iso
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://api.adzuna.com/v1/api/jobs/us/search/{page}"
+BASE_URL = "https://api.adzuna.com/v1/api/jobs/{country}/search/{page}"
 SOURCE = "adzuna"
 
 
@@ -48,7 +48,10 @@ def fetch(
             found = 0
             for page in range(1, config.ADZUNA_PAGES + 1):
                 try:
-                    response = client.get(BASE_URL.format(page=page), params=params)
+                    response = client.get(
+                        BASE_URL.format(country=config.ADZUNA_COUNTRY, page=page),
+                        params=params,
+                    )
                     response.raise_for_status()
                     results = response.json().get("results", [])
                 except httpx.HTTPError as exc:

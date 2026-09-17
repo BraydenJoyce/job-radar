@@ -196,7 +196,7 @@ class Repository:
         ).isoformat()
         rows = self.conn.execute(
             """
-            SELECT p.posting_id, p.title, p.company, p.location, p.url,
+            SELECT p.posting_id, p.source, p.title, p.company, p.location, p.url,
                    p.posted_at, p.salary_min, p.salary_max,
                    COALESCE(p.salary_is_predicted, 0) AS salary_is_predicted,
                    s.fit_score, s.match_type, s.reasoning, s.scored_at

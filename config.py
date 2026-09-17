@@ -69,6 +69,28 @@ SEARCH_LOCATION = ""
 # Per query, per source.
 RESULTS_PER_QUERY = 50
 
+# --- Adzuna attribution ----------------------------------------------------
+#
+# Adzuna's API terms require attribution wherever their listings or salary
+# estimates are displayed. The digest builds this in; do not strip it out.
+# Terms: https://developer.adzuna.com
+#
+# Which Adzuna country API to query, and the matching consumer domain that
+# attribution links must point at ("the relevant local domain").
+ADZUNA_COUNTRY = "us"
+ADZUNA_SITE_URL = "https://www.adzuna.com"
+
+# The Adzuna logo, shown beside "Jobs by Adzuna" in every digest containing
+# their listings. Get the current URL from https://www.adzuna.co.uk/press.html
+# -- their press page blocks automated fetches, so it has to be copied by hand.
+# Left empty, the digest still carries the text attribution and links, and logs
+# a warning that the logo requirement is unmet.
+ADZUNA_LOGO_URL = ""
+
+# Adzuna calls their salary estimates "Jobsworth". Every estimate shown must be
+# labelled and linked back to this page.
+ADZUNA_JOBSWORTH_URL = "https://www.adzuna.com/jobs/salary-predictor.html"
+
 HTTP_TIMEOUT_SECONDS = 30.0
 
 

@@ -162,13 +162,38 @@ that does not offer an API, and nothing touches LinkedIn or Indeed.
 
 | Source | Key | Notes |
 | --- | --- | --- |
-| Adzuna | Free | Broad US coverage. Review [their API terms](https://developer.adzuna.com) — attribution may be required. |
+| Adzuna | Free | Broad coverage. **Attribution is required** — see below. |
 | USAJobs | Free | Official US federal listings. |
 | Greenhouse | None | Public per-company board feeds. Add slugs to `sources/watched_companies.py`. |
 | Lever | None | Same, per company. |
 
 Greenhouse and Lever need you to name companies in advance, so they are off by
 default. Enable sources in `config.ENABLED_SOURCES`.
+
+### Adzuna attribution (required)
+
+Adzuna's [API terms](https://developer.adzuna.com) require attribution wherever
+their listings and salary estimates are displayed, and those obligations apply
+to you as the API user, not to this project. The digest builds the attribution
+in, so it is satisfied by default:
+
+- every digest containing Adzuna listings carries a linked **"Jobs by Adzuna"**
+  credit, with their logo image
+- every Adzuna salary estimate is labelled **"Adzuna Jobsworth"** and linked to
+  their salary predictor — those figures are Adzuna's estimate, not the
+  employer's, which is worth knowing regardless
+
+**One thing to set:** `ADZUNA_LOGO_URL` in `config.py`. Their terms ask for the
+logo image, and their press page blocks automated fetching, so copy the current
+URL from [adzuna.co.uk/press.html](https://www.adzuna.co.uk/press.html). Left
+empty, the digest still carries the text credit and links, and logs a warning.
+
+If you use a non-US Adzuna API, set `ADZUNA_COUNTRY` and point
+`ADZUNA_SITE_URL` and `ADZUNA_JOBSWORTH_URL` at your local Adzuna domain, which
+is what their terms require attribution to link to.
+
+Please do not strip this out. It is a condition of using their free API, and
+the whole project depends on sources staying free.
 
 ## Layout
 

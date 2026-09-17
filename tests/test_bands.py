@@ -112,7 +112,6 @@ def test_deduping_still_fills_the_digest():
     "minimum,maximum,predicted,expected",
     [
         (86000, 124000, False, "$86k-$124k"),
-        (84102.55, 84102.55, True, "$84k (est.)"),
         (95000, None, False, "$95k"),
         (None, None, False, ""),
         (None, 110000, False, "$110k"),
@@ -120,6 +119,15 @@ def test_deduping_still_fills_the_digest():
 )
 def test_salary_formatting(minimum, maximum, predicted, expected):
     assert slack.format_salary(minimum, maximum, predicted) == expected
+
+
+def test_estimated_salary_keeps_the_figure_and_adds_the_label():
+    # Adzuna estimates used to read "(est.)"; their terms require the words
+    # "Adzuna Jobsworth" and a link instead.
+    text = slack.format_salary(84102.55, 84102.55, predicted=True)
+
+    assert text.startswith("$84k")
+    assert "Adzuna Jobsworth" in text
 
 
 def test_digest_line_includes_salary_when_known():
@@ -147,3 +155,84 @@ def test_ties_break_toward_the_fresher_posting():
     selected = ranker.rank([older, undated, newer], size=3)
 
     assert [c.company for c in selected] == ["Newer Co", "Older Co", "Undated Co"]
+
+
+# --- Adzuna attribution ----------------------------------------------------
+# These are compliance requirements, not cosmetics: Adzuna's API terms require
+# attribution wherever their listings and salary estimates are shown, and the
+# rules apply to anyone who runs this code.
+
+
+def make_sourced(score: int, source: str, predicted: bool = False) -> ScoredPosting:
+    posting = make_named(score, f"Analyst {score}", f"Co {score}")
+    posting.source = source
+    if predicted:
+        posting.salary_min = posting.salary_max = 90000
+        posting.salary_is_predicted = True
+    return posting
+
+
+def test_adzuna_listings_carry_attribution():
+    blocks = slack.build_blocks([make_sourced(80, "adzuna")])
+    rendered = str(blocks)
+
+    assert "Jobs" in rendered and "Adzuna" in rendered
+    assert config.ADZUNA_SITE_URL in rendered
+    assert any(b["type"] == "context" for b in blocks)
+
+
+def test_no_adzuna_listings_means_no_adzuna_attribution():
+    """A federal-only digest should not claim Adzuna as a source."""
+    blocks = slack.build_blocks([make_sourced(80, "usajobs")])
+
+    assert config.ADZUNA_SITE_URL not in str(blocks)
+
+
+def test_a_mixed_digest_still_attributes_adzuna():
+    blocks = slack.build_blocks([make_sourced(80, "usajobs"), make_sourced(70, "adzuna")])
+
+    assert config.ADZUNA_SITE_URL in str(blocks)
+
+
+def test_estimated_salary_is_labelled_jobsworth_and_linked():
+    text = slack.format_salary(90000, 90000, predicted=True)
+
+    assert "Adzuna Jobsworth" in text
+    assert config.ADZUNA_JOBSWORTH_URL in text
+
+
+def test_employer_stated_salary_is_not_labelled_jobsworth():
+    """Only Adzuna's own estimates are Jobsworth; a real figure is not."""
+    text = slack.format_salary(86000, 124000, predicted=False)
+
+    assert "Jobsworth" not in text
+    assert text == "$86k-$124k"
+
+
+def test_logo_is_included_when_configured(monkeypatch):
+    monkeypatch.setattr(config, "ADZUNA_LOGO_URL", "https://example.com/adzuna.png")
+    blocks = slack.build_blocks([make_sourced(80, "adzuna")])
+
+    images = [
+        e
+        for b in blocks
+        if b["type"] == "context"
+        for e in b["elements"]
+        if e["type"] == "image"
+    ]
+    assert images and images[0]["image_url"] == "https://example.com/adzuna.png"
+
+
+def test_missing_logo_still_sends_text_attribution(monkeypatch):
+    """A missing logo must degrade, never silently drop the attribution."""
+    monkeypatch.setattr(config, "ADZUNA_LOGO_URL", "")
+    blocks = slack.build_blocks([make_sourced(80, "adzuna")])
+
+    assert config.ADZUNA_SITE_URL in str(blocks)
+
+
+def test_payload_keeps_a_text_fallback():
+    """Clients that cannot render blocks still need readable content."""
+    matches = [make_sourced(80, "adzuna")]
+
+    assert "Analyst 80" in slack.format_digest(matches)
