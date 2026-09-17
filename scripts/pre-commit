@@ -13,10 +13,16 @@
 # Bypass for one commit, if you are certain:
 #   git commit --no-verify
 
+# Ignore SIGPIPE. If this hook's output is truncated -- piped through `head`,
+# or read by a GUI client with a short buffer -- a write to the closed pipe
+# would otherwise kill the hook before it reaches the exit below, and the
+# commit would go through. A check that fails open is worse than no check.
+trap '' PIPE
+
 fail=0
 
 note() {
-    echo "pre-commit: $1" >&2
+    echo "pre-commit: $1" >&2 2>/dev/null
     fail=1
 }
 
