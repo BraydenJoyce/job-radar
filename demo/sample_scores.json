@@ -1,0 +1,58 @@
+{
+ "adzuna:5872986952": {
+  "fit_score": 78,
+  "reasoning": "Entry-level title and analytics focus align well with Jordan's target trajectory and demonstrated SQL/Python/Tableau skills, but the posting is truncated and lacks specifics on tech stack, domain, and whether the role offers the decision-proximity ownership Jordan seeks."
+ },
+ "adzuna:5886271180": {
+  "fit_score": 62,
+  "reasoning": "The BI analyst title and Tableau/SQL skill match are genuine, but the L&D domain is orthogonal to Jordan's target of analytics work informing operational decisions, and the posting's truncation prevents assessment of seniority level or whether this role owns analytics or merely supports a business function."
+ },
+ "adzuna:5882642899": {
+  "fit_score": 72,
+  "reasoning": "The role matches Jordan's target trajectory in subject matter (BI analysis, business impact assessment) and the 'Analyst II' title suggests mid-level rather than senior positioning, but the posting is truncated and provides insufficient detail on required experience, technical stack, and whether the work involves the close connection between reporting and decision-making that Jordan specifically values."
+ },
+ "adzuna:5887688684": {
+  "fit_score": 42,
+  "reasoning": "The posting title matches Jordan's target role, but the description is truncated and provides insufficient detail to assess technical requirements, seniority level, or whether the work involves the decision-adjacent reporting Jordan seeks; without seeing the full job description, requirements, and team context, this cannot be scored higher than a weak adjacent fit, and the incomplete information itself is a red flag for application priority."
+ },
+ "adzuna:5878449447": {
+  "fit_score": 78,
+  "reasoning": "The role is a genuine match on technical skills (SQL, data visualization, reporting) and aligns with Jordan's target of analytics work informing decisions, but the \"lead analytics and evaluation professional\" language and evaluation expertise requirement suggest mid-level seniority that exceeds a recent graduate's background, making this a real stretch despite strong subject-matter fit."
+ },
+ "adzuna:5887272541": {
+  "fit_score": 72,
+  "reasoning": "The role's core work\u2014reporting, process improvement, and stakeholder coordination\u2014aligns well with Jordan's internship experience and target trajectory, but the 'Analyst 2' title and emphasis on 'multiple workstreams' and 'operational execution' suggest mid-level seniority that exceeds a recent graduate's background, making this plausible near-term income rather than a clear advancement move."
+ },
+ "adzuna:5886846300": {
+  "fit_score": 72,
+  "reasoning": "The Business Intelligence Analyst title and hybrid BI work align well with Jordan's target trajectory and demonstrated Tableau/SQL skills, but the Fortune 100 corporate environment and likely enterprise-scale complexity represent a meaningful step up from internship-level experience, and the truncated job description prevents full assessment of technical requirements."
+ },
+ "adzuna:5880714873": {
+  "fit_score": 72,
+  "reasoning": "The role is a genuine BI/analytics fit with relevant tech stack (SQL, reporting, decision support) and entry-level seniority, but the Databricks and UDAP platform requirements are outside Jordan's current experience, and the incomplete job description makes it hard to assess whether the work involves the close connection between reporting and decision-making that Jordan values."
+ },
+ "usajobs:DE-13067493-26-EL": {
+  "fit_score": 28,
+  "reasoning": "This GS-11 federal role requires at least one year of specialized experience in Defense Acquisition System expertise and program lifecycle management\u2014a domain and seniority level far beyond Jordan's recent-graduate background in data analytics internships and student projects, with no acquisition, defense, or program management experience evident."
+ },
+ "usajobs:USBP-IMP-13060196-CLK": {
+  "fit_score": 38,
+  "reasoning": "The GS-13 grade level requires years of professional experience in intelligence analysis that Jordan does not possess as a recent graduate; while the analytical work of assessing sources and producing insights shares conceptual ground with data analytics, the classified intelligence domain, seniority expectation, and lack of any relevant background make this a poor fit."
+ },
+ "usajobs:DLADC-26-13043381-MP": {
+  "fit_score": 42,
+  "reasoning": "The posting is for a federal procurement analyst role requiring contracting expertise and likely a GS-9+ level position, which is a senior entry-level or mid-career track that does not align with Jordan's data analytics trajectory; while the role involves data work and reporting, it is fundamentally about contract administration and procurement policy rather than the analytics, BI, or data engineering work Jordan targets, and the specialized contracting background required is not present in the candidate's profile."
+ },
+ "adzuna:5877053259": {
+  "fit_score": 48,
+  "reasoning": "The role targets machine learning engineering with emphasis on model evaluation and AI systems\u2014a meaningful departure from Jordan's analytics-focused background in reporting, dashboards, and data pipelines\u2014and the posting's focus on 'practical AI skills employers understand' suggests depth in ML fundamentals that exceeds the candidate's current technical foundation, making this a weak adjacent fit rather than a bridge into the target trajectory."
+ },
+ "adzuna:5886839485": {
+  "fit_score": 48,
+  "reasoning": "The role is a legitimate data engineering position with relevant cloud pipeline and infrastructure work, but it requires Azure expertise and bilingual Korean fluency that Jordan lacks, and the seniority level (designing and securing enterprise platforms) exceeds what an early-career graduate with internship experience can credibly deliver without substantial ramp-up."
+ },
+ "adzuna:5884849544": {
+  "fit_score": 42,
+  "reasoning": "The Associate Data Engineer title and healthcare domain are adjacent to analytics work, but the posting lacks sufficient detail to assess technical fit, the role appears to emphasize engineering infrastructure over the reporting-and-decision-making work Jordan targets, and there is no evidence this bridges toward analytics ownership rather than away from it."
+ }
+}

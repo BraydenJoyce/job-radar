@@ -2,6 +2,7 @@
 
 Usage:
     python scripts/run_daily.py                 # the full pipeline
+    python scripts/run_daily.py --demo          # bundled data, no keys, no cost
     python scripts/run_daily.py --dry-run       # fetch and filter, no API spend
     python scripts/run_daily.py --no-slack      # score, but print instead of sending
     python scripts/run_daily.py --sources adzuna usajobs
@@ -13,6 +14,7 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
+import tempfile
 from pathlib import Path
 
 # Allow `python scripts/run_daily.py` from anywhere without installing a package.
@@ -20,7 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import config
 from db.repository import Repository
-from digest import ranker, slack
+from digest import console, ranker, slack
 from filtering import pre_filter
 from models import Posting
 from scoring import scorer
@@ -142,7 +144,58 @@ def run(sources: list[str], dry_run: bool = False, send: bool = True) -> int:
             if slack.send_slack_digest(matches):
                 repo.record_digest([m.posting_id for m in matches])
         else:
-            print(slack.format_digest(matches))
+            print(console.render(matches))
+
+    return 0
+
+
+def run_demo(send: bool = False) -> int:
+    """Run the real pipeline over bundled sample data, with no keys and no network.
+
+    Everything except fetching and scoring is the production path: the same
+    dedup, the same pre filter, the same ranking and rendering. A throwaway
+    database is used so this never touches your real one.
+    """
+    import demo
+
+    postings = demo.load_postings()
+    demo_scorer = demo.DemoScorer()
+
+    with tempfile.TemporaryDirectory() as tmp:
+        with Repository(Path(tmp) / "demo.db") as repo:
+            repo.init_schema()
+
+            fresh = repo.new_postings(postings)
+            pre_filter.apply(fresh)
+            repo.insert_postings(fresh)
+            kept = [p for p in fresh if p.passed_pre_filter]
+
+            # The bundled example profile, not profile.txt: the demo has to
+            # work on a fresh clone, and these scores were generated against it.
+            run = scorer.score_pending(
+                repo,
+                scorer=demo_scorer,
+                limit=len(kept),
+                profile=(config.ROOT / "profile.example.txt").read_text(encoding="utf-8"),
+            )
+            matches = ranker.todays_digest(repo)
+
+            print()
+            print(console.render(matches))
+            print()
+            print(
+                f"  {len(postings)} sample postings -> {len(kept)} past the pre filter "
+                f"-> {run.scored} scored -> {len(matches)} in the digest"
+            )
+            print(f"  {demo_scorer.calls} scoring calls, all served from bundled data.")
+            print("  No API key was used and nothing was sent. This cost nothing.")
+            print()
+            print("  To run it for real: python scripts/check_setup.py")
+            print()
+
+            if send:
+                if slack.send_slack_digest(matches):
+                    print("  Also posted to your Slack webhook.")
 
     return 0
 
@@ -165,6 +218,11 @@ def main() -> int:
         help=f"Sources to fetch from (default: {' '.join(config.ENABLED_SOURCES)})",
     )
     parser.add_argument(
+        "--demo",
+        action="store_true",
+        help="Run the pipeline over bundled sample data. No keys, no network, no cost.",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Fetch and pre filter only. Never calls the Claude API.",
@@ -182,6 +240,8 @@ def main() -> int:
 
     if args.stats:
         return show_stats()
+    if args.demo:
+        return run_demo(send=not args.no_slack and bool(config.SLACK_WEBHOOK_URL))
     return run(args.sources, dry_run=args.dry_run, send=not args.no_slack)
 
 

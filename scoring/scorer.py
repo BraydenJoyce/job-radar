@@ -40,15 +40,21 @@ def score_pending(
     repo: Repository,
     scorer: ClaudeScorer | None = None,
     limit: int | None = None,
+    profile: str | None = None,
 ) -> ScoringRun:
-    """Score every unscored posting that passed the pre filter."""
+    """Score every unscored posting that passed the pre filter.
+
+    `profile` is read from profile.txt unless given. The demo passes the
+    bundled example profile instead, so it runs on a fresh clone where
+    profile.txt does not exist yet.
+    """
     limit = config.MAX_SCORE_PER_RUN if limit is None else limit
     pending = repo.unscored_postings(limit=limit)
     if not pending:
         log.info("Nothing to score")
         return ScoringRun()
 
-    profile = load_profile()
+    profile = load_profile() if profile is None else profile
     scorer = scorer or ClaudeScorer()
     run = ScoringRun()
 

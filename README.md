@@ -46,6 +46,30 @@ and descriptions are truncated before they are sent.
 Steps 2 and 3 are what make this cheap. On a real run they take ~1,100 fetched
 postings down to ~70 worth paying to score.
 
+## Try it without signing up for anything
+
+```bash
+git clone https://github.com/BraydenJoyce/job-radar.git
+cd job-radar
+pip install -r requirements.txt
+python scripts/run_daily.py --demo
+```
+
+That runs the whole pipeline over bundled sample data — real listings, real
+Claude output, frozen — and prints a digest to your terminal. No API key, no
+network call, no cost. It is the actual code path: the same dedup, the same
+pre-filter, the same ranking. Only fetching and scoring are swapped for
+fixtures.
+
+You will see something like:
+
+```
+  21 sample postings -> 14 past the pre filter -> 14 scored -> 7 in the digest
+```
+
+which is the whole idea in one line: most of what a job board returns is not
+worth paying an LLM to read.
+
 ## Setup
 
 Requires Python 3.11+.
@@ -80,6 +104,9 @@ python scripts/run_daily.py --dry-run  # fetch and filter, still free
 python scripts/run_daily.py --no-slack # score, print the digest locally
 python scripts/run_daily.py            # the real thing
 ```
+
+`--no-slack` prints to the terminal, so you can run this without a Slack
+workspace at all if you would rather.
 
 ## Change these three things first
 
@@ -204,7 +231,8 @@ filtering/         the free pre-filter
 scoring/           the Claude client and the scoring loop
 digest/            ranking and Slack delivery
 scripts/           run_daily.py plus the maintenance utilities
-tests/             87 tests, no network or API key needed
+demo/              bundled sample data for `--demo`
+tests/             107 tests, no network or API key needed
 ```
 
 ```bash
