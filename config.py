@@ -83,8 +83,15 @@ ADZUNA_SITE_URL = "https://www.adzuna.com"
 # The Adzuna logo, shown beside "Jobs by Adzuna" in every digest containing
 # their listings. Get the current URL from https://www.adzuna.co.uk/press.html
 # -- their press page blocks automated fetches, so it has to be copied by hand.
+#
+# It MUST be a PNG, JPG or GIF. Slack's image blocks do not support SVG: the
+# payload is accepted with a 200 and the logo then renders as a broken image,
+# so there is no error to notice. Adzuna's own CDN serves the logo as
+# .../images/global/adzuna_logo.svg, which does not work here.
+#
 # Left empty, the digest still carries the text attribution and links, and logs
-# a warning that the logo requirement is unmet.
+# a warning that the logo requirement is unmet. That is the better failure:
+# text-only attribution reads fine, a broken image does not.
 ADZUNA_LOGO_URL = ""
 
 # Adzuna calls their salary estimates "Jobsworth". Every estimate shown must be
