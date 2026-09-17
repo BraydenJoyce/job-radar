@@ -99,7 +99,7 @@ ADZUNA_SITE_URL = "https://www.adzuna.com"
 # image. Left empty, the digest carries the text attribution and links and logs
 # a warning instead. That is the better failure: text-only attribution reads
 # fine, a broken image does not.
-ADZUNA_LOGO_URL = ""
+ADZUNA_LOGO_URL = "https://raw.githubusercontent.com/BraydenJoyce/job-radar/main/assets/adzuna_logo.png"
 
 # Adzuna calls their salary estimates "Jobsworth". Every estimate shown must be
 # labelled and linked back to this page.

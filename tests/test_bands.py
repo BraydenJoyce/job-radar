@@ -209,18 +209,25 @@ def test_employer_stated_salary_is_not_labelled_jobsworth():
     assert text == "$86k-$124k"
 
 
-def test_logo_is_included_when_configured(monkeypatch):
+def test_logo_is_an_image_block_not_a_context_element(monkeypatch):
+    """Context elements render ~20px and crop toward square, squashing a 3.9:1
+    logo and falling under the 116x23 Adzuna's terms require. An image block
+    renders at natural size, keeping the shipped 232x59 asset rectangular."""
     monkeypatch.setattr(config, "ADZUNA_LOGO_URL", "https://example.com/adzuna.png")
     blocks = slack.build_blocks([make_sourced(80, "adzuna")])
 
-    images = [
+    image_blocks = [b for b in blocks if b["type"] == "image"]
+    assert image_blocks, "the logo must be an image block"
+    assert image_blocks[0]["image_url"] == "https://example.com/adzuna.png"
+
+    context_images = [
         e
         for b in blocks
         if b["type"] == "context"
         for e in b["elements"]
         if e["type"] == "image"
     ]
-    assert images and images[0]["image_url"] == "https://example.com/adzuna.png"
+    assert not context_images, "the logo must not be a context element"
 
 
 def test_missing_logo_still_sends_text_attribution(monkeypatch):

@@ -99,9 +99,15 @@ def _attribution_blocks(matches: Sequence[ScoredPosting]) -> list[dict]:
     if not any(m.source == "adzuna" for m in matches):
         return []
 
-    elements: list[dict] = []
+    blocks: list[dict] = [{"type": "divider"}]
+
     if config.ADZUNA_LOGO_URL:
-        elements.append(
+        # An image *block*, not a context element. Context elements render at
+        # about 20 pixels and crop toward square, which squashes a 3.9:1 logo
+        # and falls under the 116x23 their terms ask for. An image block
+        # renders at the source's natural size, so the shipped 232x59 asset
+        # stays rectangular and clears the minimum.
+        blocks.append(
             {
                 "type": "image",
                 "image_url": config.ADZUNA_LOGO_URL,
@@ -111,22 +117,27 @@ def _attribution_blocks(matches: Sequence[ScoredPosting]) -> list[dict]:
     else:
         log.warning(
             "ADZUNA_LOGO_URL is not set, so the digest carries text attribution "
-            "only. Adzuna's terms ask for their logo image; get the URL from "
-            "https://www.adzuna.co.uk/press.html and set it in config.py."
+            "only. Adzuna's terms ask for their logo image; see config.py."
         )
 
-    elements.append(
+    blocks.append(
         {
-            "type": "mrkdwn",
-            "text": (
-                f"<{config.ADZUNA_SITE_URL}|Jobs> by "
-                f"<{config.ADZUNA_SITE_URL}|Adzuna> · "
-                f"salary estimates by <{config.ADZUNA_JOBSWORTH_URL}|Adzuna Jobsworth>"
-            ),
+            "type": "context",
+            "elements": [
+                {
+                    "type": "mrkdwn",
+                    "text": (
+                        f"<{config.ADZUNA_SITE_URL}|Jobs> by "
+                        f"<{config.ADZUNA_SITE_URL}|Adzuna> · "
+                        f"salary estimates by "
+                        f"<{config.ADZUNA_JOBSWORTH_URL}|Adzuna Jobsworth>"
+                    ),
+                }
+            ],
         }
     )
 
-    return [{"type": "divider"}, {"type": "context", "elements": elements}]
+    return blocks
 
 
 def build_blocks(matches: Sequence[ScoredPosting]) -> list[dict]:
