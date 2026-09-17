@@ -89,9 +89,16 @@ ADZUNA_SITE_URL = "https://www.adzuna.com"
 # so there is no error to notice. Adzuna's own CDN serves the logo as
 # .../images/global/adzuna_logo.svg, which does not work here.
 #
-# Left empty, the digest still carries the text attribution and links, and logs
-# a warning that the logo requirement is unmet. That is the better failure:
-# text-only attribution reads fine, a broken image does not.
+# A correctly sized copy ships in assets/adzuna_logo.png (232x59, resized from
+# their press kit -- see assets/NOTICE.md). Slack needs a public URL, so point
+# this at the raw file once your fork is public:
+#
+#   https://raw.githubusercontent.com/<you>/job-radar/main/assets/adzuna_logo.png
+#
+# A raw URL on a private repo returns 404 to Slack, which renders as a broken
+# image. Left empty, the digest carries the text attribution and links and logs
+# a warning instead. That is the better failure: text-only attribution reads
+# fine, a broken image does not.
 ADZUNA_LOGO_URL = ""
 
 # Adzuna calls their salary estimates "Jobsworth". Every estimate shown must be
