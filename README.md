@@ -75,7 +75,7 @@ worth paying an LLM to read.
 Requires Python 3.11+.
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/job-radar.git
+git clone https://github.com/BraydenJoyce/job-radar.git
 cd job-radar
 python -m venv venv
 venv\Scripts\activate          # Windows
