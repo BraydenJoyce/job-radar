@@ -231,11 +231,10 @@ SCORING_MAX_TOKENS = 400
 DESCRIPTION_CHAR_LIMIT = 6000
 
 # Hard ceiling on API calls per run, so a bad fetch day cannot run up a bill.
-# TEMPORARILY RAISED 2026-09-17: widening the queries and adding USAJobs left a
-# ~280 posting backlog, and 60 a run would take five days to clear while new
-# postings competed for the same slots. Put this back to 60 once the unscored
-# queue is near zero -- check with `python scripts/run_daily.py --stats`.
-MAX_SCORE_PER_RUN = 150
+# Steady state is 15-25 new postings a day, well under this; the cap only bites
+# on a backlog, which is what a fresh install or a widened set of queries
+# creates. Raise it temporarily to drain one, then put it back.
+MAX_SCORE_PER_RUN = 60
 
 # One retry on an unparseable response, then the posting is skipped.
 SCORING_RETRIES = 1
