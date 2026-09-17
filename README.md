@@ -8,18 +8,27 @@ someone has already judged against your résumé, instead of three hundred that
 matched a keyword.
 
 ```
-*Job Radar, today's top matches:*
+Job Radar: today's top matches
 
-[82] *Strong match* — Strategic Market Intelligence Analyst at CACI · Remote · $73k-$149k
-https://www.adzuna.com/details/...
-_Directly matches the candidate's competitive intelligence pipeline work, though
-the security domain is new._
+Strategic Market Intelligence Analyst  at CACI
+82  Strong match
+Remote · $73k-$149k
+Directly matches the candidate's competitive intelligence pipeline work,
+though the security domain is new.
 
-[72] *Bridge* — Entry level Data Analyst at Dhalite Inc. · Chicago · $80k (est.)
-https://www.adzuna.com/details/...
-_Straightforward SQL reporting the candidate could do today, but it does not
-advance the analytics engineering track._
+Entry level Data Analyst  at Dhalite Inc.
+72  Bridge
+Chicago · $80k · Adzuna Jobsworth
+Straightforward SQL reporting the candidate could do today, but it does not
+advance the analytics engineering track.
+
+──────────────────────────────────────────
+[logo]  Jobs by Adzuna · salary estimates by Adzuna Jobsworth
 ```
+
+Titles link to the posting. A salary marked *Adzuna Jobsworth* is Adzuna's own
+estimate rather than a figure the employer published — worth reading
+differently, and [required](#adzuna-attribution-required) to be labelled.
 
 ## What it costs
 
